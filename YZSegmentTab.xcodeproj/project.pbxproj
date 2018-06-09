@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		548CA55620CC40AF001FF383 /* YZSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 548CA55520CC40AF001FF383 /* YZSegment.m */; };
+		548CA55920CC4859001FF383 /* YZSegmentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 548CA55820CC4859001FF383 /* YZSegmentItem.m */; };
 		54ECD13D20CC3DE600F337E1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECD13C20CC3DE600F337E1 /* AppDelegate.m */; };
 		54ECD14020CC3DE600F337E1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ECD13F20CC3DE600F337E1 /* ViewController.m */; };
 		54ECD14320CC3DE600F337E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54ECD14120CC3DE600F337E1 /* Main.storyboard */; };
@@ -35,6 +37,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		548CA55420CC40AF001FF383 /* YZSegment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZSegment.h; sourceTree = "<group>"; };
+		548CA55520CC40AF001FF383 /* YZSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZSegment.m; sourceTree = "<group>"; };
+		548CA55720CC4859001FF383 /* YZSegmentItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YZSegmentItem.h; sourceTree = "<group>"; };
+		548CA55820CC4859001FF383 /* YZSegmentItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YZSegmentItem.m; sourceTree = "<group>"; };
 		54ECD13820CC3DE600F337E1 /* YZSegmentTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YZSegmentTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54ECD13B20CC3DE600F337E1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		54ECD13C20CC3DE600F337E1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -78,9 +84,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		548CA55320CC4099001FF383 /* YZSegment */ = {
+			isa = PBXGroup;
+			children = (
+				548CA55420CC40AF001FF383 /* YZSegment.h */,
+				548CA55520CC40AF001FF383 /* YZSegment.m */,
+				548CA55720CC4859001FF383 /* YZSegmentItem.h */,
+				548CA55820CC4859001FF383 /* YZSegmentItem.m */,
+			);
+			path = YZSegment;
+			sourceTree = "<group>";
+		};
 		54ECD12F20CC3DE500F337E1 = {
 			isa = PBXGroup;
 			children = (
+				548CA55320CC4099001FF383 /* YZSegment */,
 				54ECD13A20CC3DE600F337E1 /* YZSegmentTab */,
 				54ECD15320CC3DE800F337E1 /* YZSegmentTabTests */,
 				54ECD15E20CC3DE800F337E1 /* YZSegmentTabUITests */,
@@ -262,6 +280,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				548CA55920CC4859001FF383 /* YZSegmentItem.m in Sources */,
+				548CA55620CC40AF001FF383 /* YZSegment.m in Sources */,
 				54ECD14020CC3DE600F337E1 /* ViewController.m in Sources */,
 				54ECD14B20CC3DE700F337E1 /* main.m in Sources */,
 				54ECD13D20CC3DE600F337E1 /* AppDelegate.m in Sources */,
