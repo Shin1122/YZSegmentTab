@@ -30,7 +30,7 @@ typedef enum : NSUInteger {
 
 @interface YZSegment : UIView
 
-@property (nonatomic, strong) NSArray *titles ;
+@property (nonatomic, strong) NSArray <NSString *>*titles ;
 
 @property (nonatomic, assign) kYZSegmentUIStyle uiStyle ;
 
@@ -43,8 +43,14 @@ typedef enum : NSUInteger {
 /** Init */
 -(instancetype)initWithTitles:(NSArray <NSString *>*)titles;
 
+
+-(instancetype)initWithFrame:(CGRect)frame
+                      titles:(NSArray <NSString *>*)titles;
+
+
+
 /** Change title's data source dynamically */
--(void)setTitles:(NSArray * _Nonnull)titles;
+//-(void)setTitles:(NSArray * _Nonnull)titles;
 
 -(void)setIndicatorStyle:(kYZSegmentIndicatorStyle)indicatorStyle;
 

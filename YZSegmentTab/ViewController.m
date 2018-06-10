@@ -24,9 +24,10 @@
     = [[YZSegment alloc]initWithFrame:CGRectMake(0,
                                                  69,
                                                  SCREENWIDTH,
-                                                 60)];
+                                                 60)
+                               titles:@[]];
     {
-    
+       
     }
     [self.view addSubview:segment1];
     
