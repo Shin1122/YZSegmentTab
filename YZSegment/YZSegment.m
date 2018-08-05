@@ -9,6 +9,9 @@
 #import "YZSegment.h"
 #import "YZSegmentItem.h"
 
+
+#define kIndicatorHeight 4
+
 @interface YZSegment ()
 <UIScrollViewDelegate>{
     
@@ -69,20 +72,8 @@
     = @[].mutableCopy;
     
     ///@test
-    _titles
-    = @[
-        @"新闻",
-        @"推荐",
-        @"要闻",
-        @"综合",
-        @"体育",
-        @"金融",
-        @"经济",
-        @"房产",
-        @"军事",
-        @"美妆",
-        @"小视频",
-        ];
+//    _titles
+//    = ;
     
 }
 
@@ -104,9 +95,13 @@
     
     if (!_indicator) {
         _indicator
-        = [[UIImageView alloc]init];
+        = [[UIImageView alloc]initWithFrame:[self didCreatIndicatorFrame]];
+        {
+            _indicator.backgroundColor
+            = [UIColor redColor];
+        }
     }
-    [self addSubview:_indicator];
+    [_scrollContentView addSubview:_indicator];
     
     if (_titles
         &&_titles.count > 0) {
@@ -122,7 +117,7 @@
                                        didSelected:
                 ^(YZSegmentItem * _Nonnull item) {
                     ///被点击选中
-                    
+                    [weakSelf didSelectItem:item];
                 }];
              {
                  item.text
@@ -144,10 +139,6 @@
         = [self didCreatScrollContentViewFrame];
     }
     
-    if (_indicator) {
-        _indicator.frame
-        = [self didCreatIndicatorFrame];
-    }
     if (_titles
         &&_titles.count > 0
         &&_itemsArray
@@ -161,7 +152,10 @@
              [obj didLayoutSubviews];
          }];
     }
-    
+    if (_indicator) {
+        _indicator.frame
+        = [self didCreatIndicatorFrame];
+    }
     _scrollContentView.contentSize
     = CGSizeMake(CGRectGetMaxX(_itemsArray.lastObject.frame)
                  +(_horizonMargin==0?20:_horizonMargin),
@@ -228,7 +222,143 @@
 
 - (CGRect)didCreatIndicatorFrame{
     
-    return CGRectZero;
+    CGRect frame
+    = CGRectZero;
+    {
+        if (_titles
+            &&_titles.count > 0
+            &&_itemsArray
+            &&_itemsArray.count > 0) {
+            const CGRect firstFrame
+            = _itemsArray[0].frame;
+            
+            frame.origin.y
+            = CGRectGetMaxY(firstFrame)- 10 + kIndicatorHeight/2;
+            frame.size.height
+            = kIndicatorHeight;
+            
+            switch (_indicatorStyle) {
+                case kYZSegmentIndicatorStyle_Line:{
+                    switch (_indicatorAnimationType) {
+                        case kYZSegmentIndicatorAnimationType_FullLengthMoved:{
+                            frame.size.width
+                            = CGRectGetWidth(firstFrame)+_horizonMargin;
+                            frame.origin.x
+                            = CGRectGetMinX(firstFrame)
+                            - _horizonMargin/2;
+                        }
+                            break;
+                        case kYZSegmentIndicatorAnimationType_ItemsLenthMoved:
+                        case kYZSegmentIndicatorAnimationType_AdsorbMoved:{
+                            frame.size.width
+                            =CGRectGetWidth(firstFrame);
+                        }break;
+                        default:
+                            break;
+                    }
+                }
+                    break;
+                case kYZSegmentIndicatorStyle_Block:{
+                    frame.origin.x
+                    = CGRectGetMinX(firstFrame)-_horizonMargin/2;
+                    frame.origin.y
+                    = CGRectGetMinY(firstFrame);
+                    frame.size.height
+                    = CGRectGetHeight(firstFrame);
+                    frame.size.width
+                    = CGRectGetWidth(firstFrame)+_horizonMargin*2;
+                }
+                    break;
+                case kYZSegmentIndicatorStyle_Image:{
+                    frame.size.width
+                    = 4;
+                    frame.size.height
+                    = 2;
+                }
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+    }
+    return frame;
+}
+
+
+- (void)didSelectItem:(YZSegmentItem *)item{
+    
+    __weak typeof(self) weakSelf = self;
+    if (_itemsArray
+        &&_itemsArray.count > 0) {
+        [_itemsArray enumerateObjectsUsingBlock:
+         ^(YZSegmentItem * _Nonnull obj,
+           NSUInteger idx,
+           BOOL * _Nonnull stop) {
+             if (item
+                 == obj) {
+                 [weakSelf indicatorMovedToItem:item
+                                        adIndex:idx];
+                 *stop
+                 = YES;
+             }
+        }];
+    }
+}
+
+- (void)indicatorMovedToItem:(YZSegmentItem *)item
+                     adIndex:(NSInteger)index{
+    __weak typeof(self) weakSelf = self;
+    if (item) {
+        CGRect indicatorFrame
+        = _indicator.frame;
+        switch (_indicatorStyle) {
+            case kYZSegmentIndicatorStyle_Line:{
+                switch (_indicatorAnimationType) {
+                    case kYZSegmentIndicatorAnimationType_FullLengthMoved:{
+                        const CGRect itemFrame
+                        = item.frame;
+                        indicatorFrame.origin.x
+                        = CGRectGetMinX(itemFrame)
+                        - _horizonMargin/2;
+                        indicatorFrame.size.width
+                        = CGRectGetWidth(itemFrame) + _horizonMargin;
+                    }
+                        break;
+                    case kYZSegmentIndicatorAnimationType_ItemsLenthMoved:
+                    case kYZSegmentIndicatorAnimationType_AdsorbMoved:{
+                        indicatorFrame.size.width
+                        =CGRectGetWidth(item.frame);
+                    }break;
+                    default:
+                        break;
+                }
+            }
+                break;
+            case kYZSegmentIndicatorStyle_Block:{
+               
+            }
+                break;
+            case kYZSegmentIndicatorStyle_Image:{
+            }
+                break;
+            default:
+                break;
+        }
+        
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:
+         ^{
+             weakSelf.indicator.frame
+             = indicatorFrame;
+         }
+                         completion:
+         ^(BOOL finished) {
+         }];
+    }
+    
 }
 
 
@@ -259,5 +389,6 @@
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
 }
+
 
 @end

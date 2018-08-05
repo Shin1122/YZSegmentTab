@@ -55,6 +55,15 @@
         _titleLabel.frame
         = self.bounds;
     }
+    
+    
+    
+    
+    [self didSetUIStyle];
+}
+
+- (void)didSetUIStyle{
+    
 }
 
 

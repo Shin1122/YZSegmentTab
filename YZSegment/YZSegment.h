@@ -40,6 +40,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign) CGFloat horizonMargin ;
 
+@property (nonatomic, strong) UIScrollView *contentScrollView ;
+
 /** Init */
 -(instancetype)initWithTitles:(NSArray <NSString *>*)titles;
 
