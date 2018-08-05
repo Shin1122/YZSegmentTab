@@ -39,11 +39,11 @@
                                             @"小视频",
                                             ]];
     {
-       
+       segment1.indicatorAnimationType
+        =kYZSegmentIndicatorAnimationType_AdsorbMoved ;
     }
     [self.view addSubview:segment1];
     
-
 }
 
 

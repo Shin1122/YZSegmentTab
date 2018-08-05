@@ -24,7 +24,7 @@ typedef enum : NSUInteger {
 
 typedef enum : NSUInteger {
     kYZSegmentIndicatorAnimationType_FullLengthMoved,   //Indicator length as item's overall length
-    kYZSegmentIndicatorAnimationType_ItemsLenthMoved,   //Indicator length as item's area length
+    kYZSegmentIndicatorAnimationType_ItemsLengthMoved,   //Indicator length as item's area length
     kYZSegmentIndicatorAnimationType_AdsorbMoved,       //Indicator length moved adsorbed.
 } kYZSegmentIndicatorAnimationType;     //Indicator (moved) type
 

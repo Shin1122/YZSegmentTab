@@ -9,7 +9,6 @@
 #import "YZSegment.h"
 #import "YZSegmentItem.h"
 
-
 #define kIndicatorHeight 4
 
 @interface YZSegment ()
@@ -236,7 +235,10 @@
             = CGRectGetMaxY(firstFrame)- 10 + kIndicatorHeight/2;
             frame.size.height
             = kIndicatorHeight;
-            
+            CGFloat length
+            = [_itemsArray[0].text sizeWithAttributes:@{
+                                                        NSFontAttributeName:_itemsArray[0].titleLabel.font
+                                                        }].width;
             switch (_indicatorStyle) {
                 case kYZSegmentIndicatorStyle_Line:{
                     switch (_indicatorAnimationType) {
@@ -248,7 +250,13 @@
                             - _horizonMargin/2;
                         }
                             break;
-                        case kYZSegmentIndicatorAnimationType_ItemsLenthMoved:
+                        case kYZSegmentIndicatorAnimationType_ItemsLengthMoved:{
+                           
+                            frame.size.width
+                            = length;
+                            frame.origin.x
+                            = CGRectGetMidX(_itemsArray[0].frame) - length/2;
+                        }
                         case kYZSegmentIndicatorAnimationType_AdsorbMoved:{
                             frame.size.width
                             =CGRectGetWidth(firstFrame);
@@ -310,14 +318,18 @@
                      adIndex:(NSInteger)index{
     __weak typeof(self) weakSelf = self;
     if (item) {
-        CGRect indicatorFrame
+        __block CGRect indicatorFrame
         = _indicator.frame;
+        const CGRect itemFrame
+        = item.frame;
+        CGFloat length
+        = [_itemsArray[index].text sizeWithAttributes:@{
+                                                    NSFontAttributeName:_itemsArray[0].titleLabel.font
+                                                    }].width;
         switch (_indicatorStyle) {
             case kYZSegmentIndicatorStyle_Line:{
                 switch (_indicatorAnimationType) {
                     case kYZSegmentIndicatorAnimationType_FullLengthMoved:{
-                        const CGRect itemFrame
-                        = item.frame;
                         indicatorFrame.origin.x
                         = CGRectGetMinX(itemFrame)
                         - _horizonMargin/2;
@@ -325,10 +337,29 @@
                         = CGRectGetWidth(itemFrame) + _horizonMargin;
                     }
                         break;
-                    case kYZSegmentIndicatorAnimationType_ItemsLenthMoved:
-                    case kYZSegmentIndicatorAnimationType_AdsorbMoved:{
+                    case kYZSegmentIndicatorAnimationType_ItemsLengthMoved:{
+                        CGFloat length
+                        = [item.text sizeWithAttributes:@{
+                                                          NSFontAttributeName:item.titleLabel.font
+                                                          }].width;
                         indicatorFrame.size.width
-                        =CGRectGetWidth(item.frame);
+                        = length;
+                        indicatorFrame.origin.x
+                        = CGRectGetMidX(itemFrame) - length/2;
+                    }
+                    case kYZSegmentIndicatorAnimationType_AdsorbMoved:{
+                        
+                        if (CGRectGetMaxX(itemFrame)>CGRectGetMaxX(indicatorFrame)) {
+                            //右侧
+                            indicatorFrame.size.width
+                            = CGRectGetMaxX(itemFrame) - CGRectGetMinX(indicatorFrame);
+                        }else{
+                            //左侧
+                            indicatorFrame.size.width
+                            = CGRectGetMaxX(indicatorFrame)- CGRectGetMinX(itemFrame);
+                            indicatorFrame.origin.x
+                            = CGRectGetMinX(itemFrame);
+                        }
                     }break;
                     default:
                         break;
@@ -346,7 +377,18 @@
                 break;
         }
         
-        [UIView animateWithDuration:0.3
+        CGFloat animateTime = 0.3;
+        if (weakSelf.indicatorAnimationType
+            == kYZSegmentIndicatorAnimationType_AdsorbMoved) {
+            if (weakSelf.indicatorStyle
+                == kYZSegmentIndicatorStyle_Line) {
+                animateTime
+                = 0.18;
+            }else{
+            }
+        }
+        
+        [UIView animateWithDuration:animateTime
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:
@@ -356,6 +398,28 @@
          }
                          completion:
          ^(BOOL finished) {
+             if (weakSelf.indicatorAnimationType
+                  == kYZSegmentIndicatorAnimationType_AdsorbMoved) {
+                 if (weakSelf.indicatorStyle
+                      == kYZSegmentIndicatorStyle_Line) {
+                     indicatorFrame.origin.x
+                     = CGRectGetMinX(itemFrame);
+                     indicatorFrame.size.width
+                     = length;
+                     [UIView animateWithDuration:animateTime
+                                           delay:0
+                                         options:UIViewAnimationOptionCurveEaseInOut
+                                      animations:
+                      ^{
+                          weakSelf.indicator.frame
+                          = indicatorFrame;
+                      }
+                                      completion:
+                      ^(BOOL finished) {
+                                          
+                      }];
+                 }
+             }
          }];
     }
     
